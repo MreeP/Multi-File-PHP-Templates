@@ -1,0 +1,33 @@
+{
+    "name": "mreep/quick-template",
+    "type": "project",
+    "license": "CC BY-NC-ND 4.0",
+    "version": "0.1.0",
+    "autoload": {
+        "psr-4": {
+            "MreeP\\QuickTemplate\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MreeP\\QuickTemplate\\Tests\\": "tests"
+        }
+    },
+    "authors": [
+        {
+            "name": "MreeP",
+            "email": "48418089+MreeP@users.noreply.github.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.3"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html=build"
+    },
+    "require": {
+        "ext-mbstring": "*",
+        "php": ">=8.0"
+    }
+}
