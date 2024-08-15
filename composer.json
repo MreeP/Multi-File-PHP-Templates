@@ -36,6 +36,6 @@
     },
     "require": {
         "ext-mbstring": "*",
-        "php": ">=8.0"
+        "php": ">=8.3"
     }
 }
