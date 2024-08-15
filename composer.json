@@ -1,8 +1,16 @@
 {
     "name": "mreep/multi-file-php-templates",
+    "description": "A simple extendable PHP templating engine that allows you to use multiple files for your templates.",
+    "keywords": [
+        "php",
+        "template",
+        "engine",
+        "multi-file",
+        "multiple",
+        "stubs"
+    ],
     "type": "project",
-    "license": "CC BY-NC-ND 4.0",
-    "version": "0.1.0",
+    "license": "AGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "MreeP\\QuickTemplate\\": "src"
