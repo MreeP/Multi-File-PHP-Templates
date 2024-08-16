@@ -5,13 +5,13 @@ return [
     // Base path of the project
     'basePath' => dirname(__DIR__, 2),
 
+    // Shared data
     'data' => [
-        // Shared data
         'suffix' => 'example',
     ],
 
+    // File to be created
     'files' => [
-        // File to be created
         [
             // Template file path relative to the template path
             'file_path' => 'Model.php.template',
@@ -26,7 +26,15 @@ return [
             // Destination file path relative to the base path
             'directory_relative_path' => 'TestTmp/Helpers',
         ],
-
         // ...More files...
     ],
+
+    // Directory to be created
+    'directories' => [
+        'TestTmp/Resources',
+        // ...More directories...
+    ],
+
+    // Verbose mode
+    'verbose' => true,
 ];

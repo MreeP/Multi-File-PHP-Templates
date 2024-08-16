@@ -55,6 +55,7 @@ class TemplateFilesHandler
     public function handle(): void
     {
         $this->handleFiles();
+        $this->handleDirectories();
     }
 
     /**
@@ -75,13 +76,13 @@ class TemplateFilesHandler
     }
 
     /**
-     * Handle the files in the given directory.
+     * Handle the files.
      *
      * @return void
      */
     protected function handleFiles(): void
     {
-        foreach ($this->config['files'] as $file) {
+        foreach ($this->config['files'] ?? [] as $file) {
             $this->handleFile(
                 $this->templatePath($file['file_path']),
                 $this->basePath($file['directory_relative_path'], $this->getOutputFileName($file['file_path'])),
@@ -103,6 +104,37 @@ class TemplateFilesHandler
         $content = FileSystemHelper::getFileContents($inputFile);
         $result = $this->replacer->handleReplacement($content, $file);
         FileSystemHelper::putFileContents($outputFile, $result, true);
+
+        if ($this->isVerbose()) {
+            echo "File created: $outputFile\n";
+        }
+    }
+
+    /**
+     * Handle the directories.
+     *
+     * @return void
+     */
+    protected function handleDirectories(): void
+    {
+        foreach ($this->config['directories'] ?? [] as $directory) {
+            $this->handleDirectory($directory);
+        }
+    }
+
+    /**
+     * Handle the given directory.
+     *
+     * @param  string $directory
+     * @return void
+     */
+    protected function handleDirectory(string $directory): void
+    {
+        FileSystemHelper::makeDirectory($this->basePath($directory));
+
+        if ($this->isVerbose()) {
+            echo "Directory created: {$this->basePath($directory)}\n";
+        }
     }
 
     /**
@@ -187,5 +219,15 @@ class TemplateFilesHandler
         $this->config = $config;
         $this->replacer->setContextData($config['data'] ?? []);
         return $this;
+    }
+
+    /**
+     * Check if the verbose mode is enabled.
+     *
+     * @return mixed
+     */
+    protected function isVerbose(): mixed
+    {
+        return $this->getConfigItem('verbose', true);
     }
 }

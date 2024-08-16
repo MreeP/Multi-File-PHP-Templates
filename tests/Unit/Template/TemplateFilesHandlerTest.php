@@ -153,6 +153,32 @@ final class TemplateFilesHandlerTest extends TestCase
     }
 
     /**
+     * Test if handler creates correct directories.
+     *
+     * @return void
+     */
+    #[Test]
+    public function it_creates_correct_template_directories()
+    {
+        $handler = new TemplateFilesHandler(
+            $this->getReplacer(),
+            PathHelper::joinPaths(
+                dirname(__DIR__, 2),
+                'Stubs/test-template',
+            ),
+        );
+
+        $handler->handle();
+
+        $this->assertDirectoryExists(
+            PathHelper::joinPaths(
+                dirname(__DIR__, 2),
+                'TestTmp/Resources',
+            ),
+        );
+    }
+
+    /**
      * Make dummy replacer for the handler.
      *
      * @return VariablesReplacer

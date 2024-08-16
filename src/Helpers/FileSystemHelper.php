@@ -102,4 +102,17 @@ class FileSystemHelper
 
         return rmdir($path);
     }
+
+    /**
+     * Make the given directory.
+     *
+     * @param  string $path
+     * @param  int    $mode
+     * @return bool
+     */
+    public static function makeDirectory(string $path, int $mode = 0777): bool
+    {
+        return mkdir($path, $mode, true);
+    }
+
 }
