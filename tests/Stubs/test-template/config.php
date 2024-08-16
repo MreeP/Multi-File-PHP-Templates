@@ -36,5 +36,5 @@ return [
     ],
 
     // Verbose mode
-    'verbose' => true,
+    'verbose' => false,
 ];
