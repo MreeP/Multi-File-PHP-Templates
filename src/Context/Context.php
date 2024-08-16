@@ -3,6 +3,11 @@
 namespace MreeP\QuickTemplate\Context;
 
 use MreeP\QuickTemplate\Exceptions\Variables\VariableResolverAlreadyExists;
+use MreeP\QuickTemplate\Formatters\AsIsFormatter;
+use MreeP\QuickTemplate\Formatters\CamelCaseFormatter;
+use MreeP\QuickTemplate\Formatters\OutputFormatter;
+use MreeP\QuickTemplate\Formatters\PascalCaseFormatter;
+use MreeP\QuickTemplate\Formatters\TrimFormatter;
 use MreeP\QuickTemplate\Helpers\Normalize;
 use MreeP\QuickTemplate\Variables\Base\DataResolver;
 use MreeP\QuickTemplate\Variables\Base\NameResolver;
@@ -21,16 +26,18 @@ class Context
 
     protected array $data = [];
 
+    protected array $outputFormatters = [];
+
     protected array $variableResolvers = [];
 
     /**
      * Static method to create a new instance of the class.
      *
      * @param  array $resolvers
+     * @param  array $formatters
      * @return static
-     * @throws VariableResolverAlreadyExists
      */
-    public static function default(array $resolvers = []): static
+    public static function default(array $resolvers = [], array $formatters = []): static
     {
         $instance = new static();
 
@@ -42,13 +49,21 @@ class Context
             $instance->registerVariableResolver($resolver);
         }
 
+        foreach (static::getDefaultFormatters() as $formatter) {
+            $instance->registerOutputFormatter($formatter);
+        }
+
+        foreach ($formatters as $formatter) {
+            $instance->registerOutputFormatter($formatter);
+        }
+
         return $instance;
     }
 
     /**
-     * Returns the default resolvers array.
+     * Returns the default variable resolvers array.
      *
-     * @return NonExistingResolver[]
+     * @return VariableResolver[]
      */
     protected static function getDefaultResolvers(): array
     {
@@ -61,6 +76,21 @@ class Context
     }
 
     /**
+     * Returns the default output formatters array.
+     *
+     * @return OutputFormatter[]
+     */
+    protected static function getDefaultFormatters(): array
+    {
+        return [
+            new AsIsFormatter(),
+            new TrimFormatter(),
+            new CamelCaseFormatter(),
+            new PascalCaseFormatter(),
+        ];
+    }
+
+    /**
      * Set a new variable.
      *
      * @param  ParsedVariable $variable
@@ -69,8 +99,22 @@ class Context
      */
     public function resolve(ParsedVariable $variable, array $file = []): string
     {
-        return $this->getVariableResolver($variable->getVariable())
-            ->resolve($variable->getArguments(), $this->data, $file);
+        return $this->formatOutput(
+            $variable,
+            $this->getVariableResolver($variable->getVariable())->resolve($variable->getArguments(), $this->data, $file),
+        );
+    }
+
+    /**
+     * Set the data for the context.
+     *
+     * @param  array $data
+     * @return Context
+     */
+    public function mergeData(array $data): static
+    {
+        $this->data = array_merge($this->data, $data);
+        return $this;
     }
 
     /**
@@ -88,19 +132,6 @@ class Context
 
         $this->variableResolvers[Normalize::handle($variableResolver->getName())] = $variableResolver;
     }
-
-    /**
-     * Set the data for the context.
-     *
-     * @param  array $data
-     * @return Context
-     */
-    public function mergeData(array $data): static
-    {
-        $this->data = array_merge($this->data, $data);
-        return $this;
-    }
-
 
     /**
      * Determine if the context has a variable resolver.
@@ -126,5 +157,55 @@ class Context
         }
 
         return $this->variableResolvers[Normalize::handle($name)];
+    }
+
+    /**
+     * Format the output.
+     *
+     * @param  ParsedVariable $variable
+     * @param  string         $content
+     * @return string
+     */
+    protected function formatOutput(ParsedVariable $variable, string $content): string
+    {
+        $formatter = $this->getOutputFormatter($variable->getArguments()->getValue('output-format', (new AsIsFormatter())->name()));
+        return $formatter->format($content);
+    }
+
+    /**
+     * Register a new output formatter.
+     *
+     * @param  OutputFormatter $outputFormatter
+     * @return void
+     */
+    public function registerOutputFormatter(OutputFormatter $outputFormatter): void
+    {
+        $this->outputFormatters[Normalize::handle($outputFormatter->name())] = $outputFormatter;
+    }
+
+    /**
+     * Determine if the context has an output formatter.
+     *
+     * @param  string $name
+     * @return bool
+     */
+    protected function hasOutputFormatter(string $name): bool
+    {
+        return array_key_exists(Normalize::handle($name), $this->outputFormatters);
+    }
+
+    /**
+     * Get the output formatter.
+     *
+     * @param  string $name
+     * @return ?OutputFormatter
+     */
+    protected function getOutputFormatter(string $name): ?OutputFormatter
+    {
+        if (!$this->hasOutputFormatter($name)) {
+            return new AsIsFormatter();
+        }
+
+        return $this->outputFormatters[Normalize::handle($name)];
     }
 }

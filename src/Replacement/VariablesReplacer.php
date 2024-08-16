@@ -35,7 +35,11 @@ class VariablesReplacer
     public function handleReplacement(string $text, array $file = []): string
     {
         $this->detector->detectAll($text)->each(function (ParsedVariable $variable) use (&$text, $file) {
-            $text = str_replace($variable->getRaw(), $this->context->resolve($variable, $file), $text);
+            $text = str_replace(
+                $variable->getRaw(),
+                $this->context->resolve($variable, $file),
+                $text,
+            );
         });
 
         return $text;
