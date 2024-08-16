@@ -69,7 +69,7 @@ final class TemplateFilesHandlerTest extends TestCase
         $this->assertArrayHasKey('basePath', $handler->getConfig());
         $this->assertEquals(dirname(__DIR__, 2), $handler->getConfigItem('basePath'));
         $this->assertArrayHasKey('files', $handler->getConfig());
-        $this->assertCount(2, $handler->getConfigItem('files'));
+        $this->assertCount(3, $handler->getConfigItem('files'));
     }
 
     /**
@@ -176,6 +176,33 @@ final class TemplateFilesHandlerTest extends TestCase
                 'TestTmp/Resources',
             ),
         );
+    }
+
+    /**
+     * Test if handler creates file with variable in path.
+     *
+     * @return void
+     */
+    #[Test]
+    public function it_creates_file_with_variable_in_path()
+    {
+        $handler = new TemplateFilesHandler(
+            $this->getReplacer(),
+            PathHelper::joinPaths(
+                dirname(__DIR__, 2),
+                'Stubs/test-template',
+            ),
+        );
+
+        $handler->handle();
+
+        $helpersFilePath = PathHelper::joinPaths(
+            dirname(__DIR__, 2),
+            '/TestTmp/Helpers/ExampleModule/helpers.php',
+        );
+
+        $this->assertFileExists($helpersFilePath);
+        $this->assertFileIsReadable($helpersFilePath);
     }
 
     /**

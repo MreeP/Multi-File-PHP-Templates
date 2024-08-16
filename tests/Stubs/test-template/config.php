@@ -8,7 +8,7 @@ return [
     // Shared data
     'data' => [
         'suffix' => 'example',
-        'module' => 'ex-module-ample',
+        'module' => 'ExampleModule',
     ],
 
     // File to be created
