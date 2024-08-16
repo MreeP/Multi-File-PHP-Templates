@@ -84,8 +84,8 @@ class TemplateFilesHandler
     {
         foreach ($this->config['files'] ?? [] as $file) {
             $this->handleFile(
-                $this->templatePath($file['file_path']),
-                $this->basePath($file['directory_relative_path'], $this->getOutputFileName($file['file_path'])),
+                $this->templatePath($file['template_file_path']),
+                $this->basePath($file['directory_relative_path'], $this->getOutputFileName($file['template_file_path'])),
                 $file,
             );
         }

@@ -33,7 +33,7 @@ class NameResolver implements VariableResolver
      */
     public function resolve(ParsedVariableArguments $arguments, array $data, array $file = []): string
     {
-        $result = strstr($file['file_path'], '.', true);
+        $result = strstr($file['template_file_path'], '.', true);
 
         return $result === false
             ? ''

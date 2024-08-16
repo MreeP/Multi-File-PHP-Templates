@@ -33,7 +33,7 @@ class NamespaceResolver implements VariableResolver
      */
     public function resolve(ParsedVariableArguments $arguments, array $data, array $file = []): string
     {
-        $pathSegments = explode(DIRECTORY_SEPARATOR, $file['directory_relative_path'] . '/' . $file['file_path']);
+        $pathSegments = explode(DIRECTORY_SEPARATOR, $file['directory_relative_path'] . '/' . $file['template_file_path']);
         $directory = array_slice($pathSegments, 0, -1);
 
         return trim(

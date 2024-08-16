@@ -14,14 +14,14 @@ return [
     'files' => [
         [
             // Template file path relative to the template path
-            'file_path' => 'Model.php.template',
+            'template_file_path' => 'Model.php.template',
 
             // Destination file path relative to the base path
             'directory_relative_path' => 'TestTmp/Models',
         ],
         [
             // Template file path relative to the template path
-            'file_path' => 'helpers.php.template',
+            'template_file_path' => 'helpers.php.template',
 
             // Destination file path relative to the base path
             'directory_relative_path' => 'TestTmp/Helpers',
