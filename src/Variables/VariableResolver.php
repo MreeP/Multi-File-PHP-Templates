@@ -13,7 +13,7 @@ interface VariableResolver
     /**
      * Get the name of the resolver.
      *
-     * @return mixed
+     * @return string
      */
     public function getName(): string;
 
@@ -23,7 +23,7 @@ interface VariableResolver
      * @param  ParsedVariableArguments $arguments
      * @param  array                   $data
      * @param  array                   $file
-     * @return mixed
+     * @return string
      */
     public function resolve(ParsedVariableArguments $arguments, array $data, array $file = []): string;
 }
