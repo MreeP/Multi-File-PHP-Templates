@@ -8,6 +8,7 @@ return [
     // Shared data
     'data' => [
         'suffix' => 'example',
+        'module' => 'ex-module-ample',
     ],
 
     // File to be created
@@ -17,14 +18,21 @@ return [
             'template_file_path' => 'Model.php.template',
 
             // Destination file path relative to the base path
-            'output_file_path' => 'TestTmp/Models/Model.php.template',
+            'output_file_path' => 'TestTmp/Models/Model.php',
         ],
         [
             // Template file path relative to the template path
             'template_file_path' => 'helpers.php.template',
 
             // Destination file path relative to the base path
-            'output_file_path' => 'TestTmp/Helpers/helpers.php.template',
+            'output_file_path' => 'TestTmp/Helpers/helpers.php',
+        ],
+        [
+            // Template file path relative to the template path
+            'template_file_path' => 'helpers.php.template',
+
+            // Destination file path relative to the base path
+            'output_file_path' => 'TestTmp/Helpers/[[ data key="module" ]]/helpers.php',
         ],
         // ...More files...
     ],
