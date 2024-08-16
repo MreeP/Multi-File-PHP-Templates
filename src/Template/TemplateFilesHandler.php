@@ -85,7 +85,7 @@ class TemplateFilesHandler
         foreach ($this->config['files'] ?? [] as $file) {
             $this->handleFile(
                 $this->templatePath($file['template_file_path']),
-                $this->basePath($file['output_file_path'], $this->getOutputFileName($file['template_file_path'])),
+                $this->basePath($this->handleReplacement($file['output_file_path'])),
                 $file,
             );
         }
@@ -101,9 +101,14 @@ class TemplateFilesHandler
      */
     protected function handleFile(string $inputFile, string $outputFile, array $file = []): void
     {
-        $content = FileSystemHelper::getFileContents($inputFile);
-        $result = $this->replacer->handleReplacement($content, $file);
-        FileSystemHelper::putFileContents($outputFile, $result, true);
+        FileSystemHelper::putFileContents(
+            $outputFile,
+            $this->handleReplacement(
+                FileSystemHelper::getFileContents($inputFile),
+                $file,
+            ),
+            true,
+        );
 
         if ($this->isVerbose()) {
             echo "File created: $outputFile\n";
@@ -130,11 +135,23 @@ class TemplateFilesHandler
      */
     protected function handleDirectory(string $directory): void
     {
-        FileSystemHelper::makeDirectory($this->basePath($directory));
+        FileSystemHelper::makeDirectory($this->basePath($this->handleReplacement($directory)));
 
         if ($this->isVerbose()) {
             echo "Directory created: {$this->basePath($directory)}\n";
         }
+    }
+
+    /**
+     * Handle the replacement.
+     *
+     * @param  string $text
+     * @param  array  $file
+     * @return string
+     */
+    protected function handleReplacement(string $text, array $file = []): string
+    {
+        return $this->replacer->handleReplacement($text, $file);
     }
 
     /**
