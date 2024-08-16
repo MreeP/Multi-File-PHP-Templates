@@ -93,11 +93,11 @@ class Context
      * Set the data for the context.
      *
      * @param  array $data
-     * @return self
+     * @return Context
      */
-    public function setData(array $data): self
+    public function mergeData(array $data): static
     {
-        $this->data = $data;
+        $this->data = array_merge($this->data, $data);
         return $this;
     }
 

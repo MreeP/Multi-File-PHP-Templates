@@ -49,7 +49,7 @@ class VariablesReplacer
      */
     public function setContextData(array $data): self
     {
-        $this->context->setData($data);
+        $this->context->mergeData($data);
         return $this;
     }
 }
