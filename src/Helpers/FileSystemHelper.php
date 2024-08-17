@@ -112,6 +112,10 @@ class FileSystemHelper
      */
     public static function makeDirectory(string $path, int $mode = 0777): bool
     {
+        if (is_dir($path)) {
+            return true;
+        }
+
         return mkdir($path, $mode, true);
     }
 
