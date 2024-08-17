@@ -17,7 +17,7 @@ class CamelCaseFormatter implements OutputFormatter
      */
     public function name(): string
     {
-        return 'camel-case';
+        return 'camel';
     }
 
     /**

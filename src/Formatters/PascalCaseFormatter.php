@@ -17,7 +17,7 @@ class PascalCaseFormatter implements OutputFormatter
      */
     public function name(): string
     {
-        return 'camel-case';
+        return 'pascal';
     }
 
     /**
