@@ -105,7 +105,7 @@ class VariableDetector
     protected function makePattern(): string
     {
         $variable = '(?<variable>[a-zA-Z][\w_\-]+)';
-        $arguments = "(?<arguments>(?: +(?:[a-zA-Z]\w*)| +(?:[a-zA-Z]\w*=\"(?:[^\"\n\\\\]|(?:\\\\\"))*\"))+)?";
+        $arguments = "(?<arguments>(?: +(?:[a-zA-Z][\w\-]*)| +(?:[a-zA-Z][\w\-]*=\"(?:[^\"\n\\\\]|(?:\\\\\"))*\"))+)?";
         $prefix = $this->getPatternPrefix();
         $suffix = $this->getPatternSuffix();
 
@@ -139,7 +139,7 @@ class VariableDetector
      */
     protected function makeNamedVariablePattern(): string
     {
-        return '/(?<name>[a-zA-Z]\w*)=("?)(?<value>(?:[^"\n\\\\]|(?:\\\\"))*)(?2)/';
+        return '/(?<name>[a-zA-Z][\w\-]*)=("?)(?<value>(?:[^"\n\\\\]|(?:\\\\"))*)(?2)/';
     }
 
     /**
@@ -149,6 +149,6 @@ class VariableDetector
      */
     protected function makeFlagVariablePattern(): string
     {
-        return '/(?<flag>[a-zA-Z]\w*)/';
+        return '/(?<flag>[a-zA-Z][\w\-]*)/';
     }
 }
