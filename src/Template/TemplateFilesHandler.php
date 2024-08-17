@@ -135,10 +135,12 @@ class TemplateFilesHandler
      */
     protected function handleDirectory(string $directory): void
     {
-        FileSystemHelper::makeDirectory($this->basePath($this->handleReplacement($directory)));
+        $directory = $this->basePath($this->handleReplacement($directory));
+
+        FileSystemHelper::makeDirectory($directory);
 
         if ($this->isVerbose()) {
-            echo "Directory created: {$this->basePath($directory)}\n";
+            echo "Directory created: {$directory}\n";
         }
     }
 
