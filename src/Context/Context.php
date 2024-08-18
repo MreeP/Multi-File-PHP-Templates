@@ -5,8 +5,10 @@ namespace MreeP\QuickTemplate\Context;
 use MreeP\QuickTemplate\Exceptions\Variables\VariableResolverAlreadyExists;
 use MreeP\QuickTemplate\Formatters\AsIsFormatter;
 use MreeP\QuickTemplate\Formatters\CamelCaseFormatter;
+use MreeP\QuickTemplate\Formatters\KebabCaseFormatter;
 use MreeP\QuickTemplate\Formatters\OutputFormatter;
 use MreeP\QuickTemplate\Formatters\PascalCaseFormatter;
+use MreeP\QuickTemplate\Formatters\SnakeCaseFormatter;
 use MreeP\QuickTemplate\Formatters\TrimFormatter;
 use MreeP\QuickTemplate\Helpers\Normalize;
 use MreeP\QuickTemplate\Variables\Base\DataResolver;
@@ -84,9 +86,11 @@ class Context
     {
         return [
             new AsIsFormatter(),
-            new TrimFormatter(),
             new CamelCaseFormatter(),
+            new KebabCaseFormatter(),
             new PascalCaseFormatter(),
+            new SnakeCaseFormatter(),
+            new TrimFormatter(),
         ];
     }
 
