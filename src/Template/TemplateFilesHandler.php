@@ -85,7 +85,7 @@ class TemplateFilesHandler
         foreach ($this->config['files'] ?? [] as $file) {
             $this->handleFile(
                 $this->templatePath($file['template_file_path']),
-                $this->outputPath($this->handleReplacement($file['output_file_path'])),
+                $this->handleReplacement($this->outputPath($file['output_file_path'])),
                 $file,
             );
         }
@@ -142,7 +142,7 @@ class TemplateFilesHandler
      */
     protected function handleDirectory(string $directory): void
     {
-        $directory = $this->outputPath($this->handleReplacement($directory));
+        $directory = $this->handleReplacement($this->outputPath($directory));
 
         FileSystemHelper::makeDirectory($directory);
 
