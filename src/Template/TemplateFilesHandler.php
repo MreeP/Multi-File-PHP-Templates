@@ -85,7 +85,7 @@ class TemplateFilesHandler
         foreach ($this->config['files'] ?? [] as $file) {
             $this->handleFile(
                 $this->templatePath($file['template_file_path']),
-                $this->basePath($this->handleReplacement($file['output_file_path'])),
+                $this->outputPath($this->handleReplacement($file['output_file_path'])),
                 $file,
             );
         }
@@ -105,7 +105,14 @@ class TemplateFilesHandler
             $outputFile,
             $this->handleReplacement(
                 FileSystemHelper::getFileContents($inputFile),
-                $file,
+                array_merge(
+                    [
+                        'base_path' => $this->getConfigItem('base_path'),
+                        'output_directory' => $this->getConfigItem('output_directory'),
+                        'psr4' => $this->getConfigItem('psr4', []),
+                    ],
+                    $file,
+                ),
             ),
             true,
         );
@@ -135,7 +142,7 @@ class TemplateFilesHandler
      */
     protected function handleDirectory(string $directory): void
     {
-        $directory = $this->basePath($this->handleReplacement($directory));
+        $directory = $this->outputPath($this->handleReplacement($directory));
 
         FileSystemHelper::makeDirectory($directory);
 
@@ -157,6 +164,34 @@ class TemplateFilesHandler
     }
 
     /**
+     * Return path relative to the basePath.
+     *
+     * @param  string $path
+     * @return string
+     */
+    protected function baseRelativePath(string $path): string
+    {
+        return trim(
+            str_replace($this->basePath(), '', $path),
+            DIRECTORY_SEPARATOR,
+        );
+    }
+
+    /**
+     * Make the path relative to the output path.
+     *
+     * @param  ...$path
+     * @return string
+     */
+    protected function outputPath(...$path): string
+    {
+        return $this->basePath(
+            $this->getConfigItem('output_directory', ''),
+            ...$path,
+        );
+    }
+
+    /**
      * Make the path relative to the base path.
      *
      * @param  ...$path
@@ -165,7 +200,7 @@ class TemplateFilesHandler
     protected function basePath(...$path): string
     {
         return PathHelper::joinPaths(
-            $this->getConfigItem('basePath'),
+            $this->getConfigItem('base_path'),
             ...$path,
         );
     }

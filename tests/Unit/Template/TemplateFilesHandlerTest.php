@@ -66,8 +66,8 @@ final class TemplateFilesHandlerTest extends TestCase
         );
 
         $this->assertIsArray($handler->getConfig());
-        $this->assertArrayHasKey('basePath', $handler->getConfig());
-        $this->assertEquals(dirname(__DIR__, 2), $handler->getConfigItem('basePath'));
+        $this->assertArrayHasKey('base_path', $handler->getConfig());
+        $this->assertEquals(dirname(__DIR__, 2), $handler->getConfigItem('base_path'));
         $this->assertArrayHasKey('files', $handler->getConfig());
         $this->assertCount(4, $handler->getConfigItem('files'));
     }
@@ -203,6 +203,39 @@ final class TemplateFilesHandlerTest extends TestCase
 
         $this->assertFileExists($helpersFilePath);
         $this->assertFileIsReadable($helpersFilePath);
+    }
+
+    /**
+     * Test if handler resolves psr4 namespace correctly.
+     *
+     * @return void
+     */
+    #[Test]
+    public function it_resolves_psr4_namespace_correctly()
+    {
+        $handler = new TemplateFilesHandler(
+            $this->getReplacer(),
+            PathHelper::joinPaths(
+                dirname(__DIR__, 2),
+                'Stubs/test-template',
+            ),
+        );
+
+        $handler->handle();
+
+        $testCaseFilePath = PathHelper::joinPaths(
+            dirname(__DIR__, 2),
+            '/TestTmp/Tests/TestCase.php',
+        );
+
+        $this->assertFileExists($testCaseFilePath);
+        $this->assertFileEquals(
+            $testCaseFilePath,
+            PathHelper::joinPaths(
+                dirname(__DIR__, 2),
+                'Stubs/test-handled-template/TestCase.php',
+            ),
+        );
     }
 
     /**

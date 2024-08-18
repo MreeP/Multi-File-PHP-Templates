@@ -35,8 +35,6 @@ class NameResolver implements VariableResolver
     {
         $result = strstr($file['template_file_path'], '.', true);
 
-        return $result === false
-            ? ''
-            : mb_convert_case($result, MB_CASE_TITLE, 'UTF-8');
+        return $result === false ? '' : $result;
     }
 }

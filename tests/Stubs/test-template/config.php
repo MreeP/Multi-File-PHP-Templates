@@ -3,7 +3,14 @@
 return [
 
     // Base path of the project
-    'basePath' => dirname(__DIR__, 2),
+    'base_path' => dirname(__DIR__, 2),
+
+    // Output directory
+    'output_directory' => 'TestTmp',
+
+    'psr4' => [
+        'TestTmp\\Tests' => 'Tests',
+    ],
 
     // Shared data
     'data' => [
@@ -11,35 +18,42 @@ return [
         'module' => 'ExampleModule',
     ],
 
-    // File to be created
+    // Files to be created
     'files' => [
         [
             // Template file path relative to the template path
             'template_file_path' => 'Model.php.template',
 
-            // Destination file path relative to the base path
-            'output_file_path' => 'TestTmp/Models/Model.php',
+            // Destination file path relative to the output directory
+            'output_file_path' => 'Models/Model.php',
         ],
         [
             // Template file path relative to the template path
             'template_file_path' => 'helpers.php.template',
 
-            // Destination file path relative to the base path
-            'output_file_path' => 'TestTmp/Helpers/helpers.php',
+            // Destination file path relative to the output directory
+            'output_file_path' => 'Helpers/helpers.php',
         ],
         [
             // Template file path relative to the template path
             'template_file_path' => 'helpers.php.template',
 
-            // Destination file path relative to the base path
-            'output_file_path' => 'TestTmp/Helpers/[[ data key="module" ]]/helpers.php',
+            // Destination file path relative to the output directory
+            'output_file_path' => 'Helpers/[[ data key="module" ]]/helpers.php',
+        ],
+        [
+            // Template file path relative to the template path
+            'template_file_path' => 'TestCase.php.template',
+
+            // Destination file path relative to the output directory
+            'output_file_path' => 'Tests/TestCase.php',
         ],
         // ...More files...
     ],
 
-    // Directory to be created
+    // Directories to be created relative to the output directory
     'directories' => [
-        'TestTmp/Resources',
+        'Resources',
         // ...More directories...
     ],
 
