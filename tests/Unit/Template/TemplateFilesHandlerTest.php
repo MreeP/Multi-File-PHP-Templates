@@ -69,7 +69,7 @@ final class TemplateFilesHandlerTest extends TestCase
         $this->assertArrayHasKey('basePath', $handler->getConfig());
         $this->assertEquals(dirname(__DIR__, 2), $handler->getConfigItem('basePath'));
         $this->assertArrayHasKey('files', $handler->getConfig());
-        $this->assertCount(3, $handler->getConfigItem('files'));
+        $this->assertCount(4, $handler->getConfigItem('files'));
     }
 
     /**
